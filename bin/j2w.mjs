@@ -30,7 +30,6 @@ const args = yargs(hideBin(process.argv))
     .option('trigger-type', {
         alias: '-n',
         describe: "Spin trigger to target",
-        choices: validSpinWorlds,
         demandOption: true
     })
     .argv;
