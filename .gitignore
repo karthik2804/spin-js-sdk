@@ -1,1 +1,4 @@
 spin-sdk/
+lib/
+node_modules/
+v2/
