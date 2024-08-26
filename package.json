@@ -29,7 +29,7 @@
     "itty-router": "^3.0.12",
     "yargs": "^17.7.2",
     "typedoc-plugin-missing-exports": "^3.0.0",
-    "@fermyon/knitwit": "https://github.com/fermyon/knitwit"
+    "@fermyon/knitwit": "https://github.com/karthik2804/knitwit#test_env"
   },
   "files": [
     "lib",
