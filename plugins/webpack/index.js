@@ -9,7 +9,8 @@ class SpinSdkPlugin {
             "fermyon:spin/sqlite@2.0.0": "fermyon:spin/sqlite@2.0.0",
             "fermyon:spin/postgres@2.0.0": "fermyon:spin/postgres@2.0.0",
             "fermyon:spin/mysql@2.0.0": "fermyon:spin/mysql@2.0.0",
-            "fermyon:spin/mqtt@2.0.0": "fermyon:spin/mqtt@2.0.0"
+            "fermyon:spin/mqtt@2.0.0": "fermyon:spin/mqtt@2.0.0",
+            "spin:http/http@3.0.0": "spin:http/http@3.0.0"
         };
     }
 

@@ -10,6 +10,7 @@ world spin-imports {
   import sqlite;
   import key-value;
   import variables;
+  import spin:http/http@3.0.0;
 }
 
 world spin-redis {

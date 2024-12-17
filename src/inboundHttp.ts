@@ -13,6 +13,9 @@ import {
   OutgoingBody as OutgoingBodyType,
 } from './types/wasi-http';
 
+//@ts-ignore
+import { sendInformational } from 'spin:http/http@3.0.0'
+
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();
 
@@ -144,6 +147,17 @@ export class ResponseBuilder {
       throw new Error('Invalid arguments');
     }
     return this;
+  }
+  info(status: number, info_headers: { [key: string]: string }) {
+    let headers = new Headers();
+    for (const key in info_headers) {
+      headers.set(key, info_headers[key]);
+    }
+    let h = new Fields() as headers;
+    headers.forEach((value, key) => {
+      h.append(key, encoder.encode(value));
+    });
+    sendInformational(this.responseOut, status, h);
   }
   send(value: BodyInit = new Uint8Array()) {
     if (this.hasSentResponse) {

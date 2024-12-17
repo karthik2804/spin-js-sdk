@@ -18,8 +18,11 @@
     },
     "exclude": [
         "templates/**/*",
+        "plugins/**/*",
         "lib/**/*",
         "bin/**/*",
-        "test/**/*"
+        "test/**/*",
+        "examples/**/*",
+        "docs/**/*",
     ]
 }
