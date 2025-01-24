@@ -1,19 +1,43 @@
-import { ResponseBuilder, Router } from "@fermyon/spin-sdk";
+import { AutoRouter as Router } from "itty-router";
 
 let router = Router();
-// Modify this route or add additional ones to implement the component's API:
-router.get("/hello/:name", (metadata, req, res) => { handleHelloRoute(req, res, metadata.params.name) });
-// Default route that will be called for any routes not handled above:
-router.all("*", (_, req, res) => { notFound(req, res) });
 
-async function handleHelloRoute(req: Request, res: ResponseBuilder, name: string) {
-    res.send(`hello ${name}`);
-}
-async function notFound(req: Request, res: ResponseBuilder) {
-    res.status(404);
-    res.send("not found");
-}
+const encoder = new TextEncoder()
+router
+    .get('/hello/:name', ({ name }) => `Hello, ${name}!`) // Converts to text/plain Response
+    .get('/json', () => ({ foo: 'bar' })) // Converts to JSON Response
+    .get('/simple', () => new Response('Simple')) // Returns a Response object
+    .get('/headers', () => new Response('Custom', {
+        status: 201,
+        headers: { 'X-Custom': 'Value' }
+    }))
+    .get('/stream', () => {
+        // Create a new ReadableStream
+        const { readable, writable } = new TransformStream()
+        const writer = writable.getWriter()
 
-export async function handler(req: Request, res: ResponseBuilder) {
-    await router.handleRequest(req, res);
-}
+        const fn = async () => {
+            await writer.write(encoder.encode('Hello, world!\n'))
+            await new Promise((res) => setTimeout(res, 1000))
+            await writer.write(encoder.encode('bye universe!\n'))
+            await new Promise((res) => setTimeout(res, 20))
+        }
+
+        fn().finally(async () => {
+            await writer.close()
+        })
+
+        // Return the stream as a Response
+        return new Response(readable, {
+            headers: { 'Content-Type': 'text/plain' },
+        });
+    })
+    .post("/echo", (req: Request) => {
+        return new Response(req.body, { status: 200, headers: req.headers })
+    })
+    .get('/throw', () => { throw new Error('Oops') }) // Automatically converts to 500 error response
+
+//@ts-ignore
+addEventListener('fetch', async (event: FetchEvent) => {
+    event.respondWith(router.fetch(event.request));
+});

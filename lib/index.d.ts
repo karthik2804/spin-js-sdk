@@ -7,6 +7,5 @@ import * as Sqlite from './sqlite';
 import * as Postgres from './postgres';
 import * as Mysql from './mysql';
 import * as Mqtt from './mqtt';
-import { Router } from './router';
 import * as PostgresV3 from './postgresv3';
-export { Router, Llm, Variables, Redis, Kv, Sqlite, Postgres, Mysql, Mqtt, PostgresV3, RedisHandler, };
+export { Llm, Variables, Redis, Kv, Sqlite, Postgres, Mysql, Mqtt, PostgresV3, RedisHandler, };
