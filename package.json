@@ -26,9 +26,13 @@
   },
   "dependencies": {
     "@bytecodealliance/componentize-js": "^0.16.0",
-    "yargs": "^17.7.2",
+    "@fermyon/knitwit": "^0.3.0",
+    "acorn-walk": "^8.3.4",
+    "acron": "^1.0.5",
+    "magic-string": "^0.30.17",
+    "regexpu-core": "^6.2.0",
     "typedoc-plugin-missing-exports": "^3.0.0",
-    "@fermyon/knitwit": "^0.3.0"
+    "yargs": "^17.7.2"
   },
   "files": [
     "lib",
