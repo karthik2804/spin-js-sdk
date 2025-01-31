@@ -36,6 +36,9 @@ const args = yargs(hideBin(process.argv))
         describe: "Enable Ahead of Time compilation",
         type: 'boolean',
     })
+    .option("engine-path", {
+        describe: "Path to the engine",
+    })
     .argv;
 
 const src = args.input;
@@ -110,13 +113,16 @@ async function saveBuildData(buildDataPath, checksum, version) {
             console.log(`Using user-provided wit in: ${witPath}`);
         }
 
+        console.log("engine path", args.enginePath);
+
         const { component } = await componentize(source, {
             sourceName: basename(src),
             witPath,
             worldName: args.triggerType,
             disableFeatures: [],
             enableFeatures: ["http"],
-            enableAot: args.aot
+            enableAot: args.aot,
+            engine: args.enginePath ? args.enginePath : undefined,
         });
 
         await writeFile(outputPath, component);
