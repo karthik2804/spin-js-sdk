@@ -25,7 +25,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@bytecodealliance/componentize-js": "^0.16.0",
+    "@bytecodealliance/componentize-js": "https://github.com/karthik2804/ComponentizeJS#fix_tee",
     "yargs": "^17.7.2",
     "typedoc-plugin-missing-exports": "^3.0.0",
     "@fermyon/knitwit": "^0.3.0",
