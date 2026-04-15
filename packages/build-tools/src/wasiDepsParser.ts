@@ -105,8 +105,9 @@ export function getPackagesWithWasiDeps(
   };
 
   const result: DependencyResult = [];
+  let spinDependencies: null | WitDependency = null;
 
-  if (topLevel) {
+    if (topLevel) {
     if (packageJson.config?.witDependencies) {
       absolutizeWitPath(dir, packageJson);
 
@@ -116,6 +117,16 @@ export function getPackagesWithWasiDeps(
           witDependencies: packageJson.config.witDependencies,
         },
       });
+    }
+
+    // Check for spin-dependencies.wit at the top level
+    const spinDependenciesPath = path.join(dir, 'spin-dependencies.wit');
+    if (fs.existsSync(spinDependenciesPath)) {
+      spinDependencies = {
+        witPath: maybeWindowsPath(spinDependenciesPath),
+        package: "root:component",
+        world: 'root',
+      };
     }
   }
 
@@ -131,7 +142,6 @@ export function getPackagesWithWasiDeps(
 
       // Convert relative 'witPath' to absolute
       absolutizeWitPath(depPath, depPackageJson);
-
       // If the package has a 'knitwit' config, add it to the result
       if (depPackageJson.config?.witDependencies) {
         result.push({
@@ -146,6 +156,20 @@ export function getPackagesWithWasiDeps(
       result.push(...getPackagesWithWasiDeps(depPath, visited, false));
     }
   });
+
+  // If we found a top-level spin-dependencies.wit, add it as a dependency
+  // We add it to the end because merging wit is not commutative
+  // JS has unminified wit while components may have minified wit, so we want to make sure the unminified wit is merged first.
+  // https://github.com/bytecodealliance/wasm-tools/pull/2451
+  if (spinDependencies) {
+    console.log('Adding top-level spin-dependencies.wit as a dependency');
+    result.push({
+      name: 'spin-dependencies',
+      config: {
+        witDependencies: [spinDependencies],
+      },
+    });
+  }
 
   return result;
 }
